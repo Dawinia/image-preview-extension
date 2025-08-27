@@ -7,9 +7,12 @@ class ImagePreviewer {
     init() {
         document.addEventListener('click', (e) => {
             if (e.target.tagName.toLowerCase() === 'img') {
+                // 阻止默认行为和事件冒泡，屏蔽原有的点击行为
+                e.preventDefault();
+                e.stopPropagation();
                 this.showPreview(e);
             }
-        });
+        }, true); // 使用捕获阶段，确保在其他事件处理器之前执行
     }
 
     showPreview(e) {
@@ -83,9 +86,10 @@ class ImagePreviewer {
     }
 
     setupEventListeners(modal, image, state) {
-        // 缩放事件
-        image.addEventListener('wheel', (event) => {
+        // 缩放事件 - 应用到整个模态窗口，防止页面滚动
+        modal.addEventListener('wheel', (event) => {
             event.preventDefault();
+            event.stopPropagation();
             const maxScale = 10;
             const minScale = 0.1;
 
@@ -96,7 +100,7 @@ class ImagePreviewer {
             }
 
             this.updateImageTransform(image, state);
-        });
+        }, { passive: false }); // 明确指定非被动模式，确保preventDefault生效
 
         // 拖拽开始
         image.addEventListener('mousedown', (e) => {
