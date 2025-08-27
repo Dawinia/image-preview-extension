@@ -3,8 +3,8 @@
   "name": "Enhanced Image Previewer",
   "version": "1.0",
   "description": "一个强大的图片预览插件，支持缩放、拖拽和加载动画",
-  "author": "your-email@example.com",
-  "homepage_url": "https://github.com/yourusername/image-preview-extension",
+  "author": "dawinialo@gmail.com",
+  "homepage_url": "https://github.com/dawinialo/image-preview-extension",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
