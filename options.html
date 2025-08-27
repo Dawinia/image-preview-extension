@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Enhanced Image Previewer 设置</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 800px;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+    .section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #444;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="color"], input[type="range"], input[type="number"] {
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    .color-preview {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ccc;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-right: 10px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    button#reset {
+      background-color: #f44336;
+    }
+    button#reset:hover {
+      background-color: #d32f2f;
+    }
+    #status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .range-container {
+      display: flex;
+      align-items: center;
+    }
+    .range-container input[type="range"] {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .range-value {
+      min-width: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Enhanced Image Previewer 设置</h1>
+  
+  <div class="section">
+    <h2>预览窗口</h2>
+    <label>
+      背景颜色:
+      <input type="color" id="backgroundColor">
+      <span class="color-preview" id="colorPreview"></span>
+    </label>
+    
+    <div class="range-container">
+      <label for="backgroundOpacity">背景不透明度:</label>
+      <input type="range" id="backgroundOpacity" min="0" max="1" step="0.1">
+      <span class="range-value" id="opacityValue">0.8</span>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>交互设置</h2>
+    <label>
+      <input type="checkbox" id="enableKeyboardShortcuts">
+      启用键盘快捷键 (ESC关闭, +/-缩放, 0重置, 方向键移动)
+    </label>
+    
+    <label>
+      <input type="checkbox" id="enableDoubleClickReset">
+      启用双击重置缩放
+    </label>
+  </div>
+  
+  <div class="section">
+    <h2>缩放设置</h2>
+    <div class="range-container">
+      <label for="maxScale">最大缩放比例:</label>
+      <input type="range" id="maxScale" min="1" max="20" step="1">
+      <span class="range-value" id="maxScaleValue">10</span>
+    </div>
+    
+    <div class="range-container">
+      <label for="scaleSpeed">缩放速度:</label>
+      <input type="range" id="scaleSpeed" min="1.01" max="1.5" step="0.01">
+      <span class="range-value" id="scaleSpeedValue">1.1</span>
+    </div>
+  </div>
+  
+  <div class="buttons">
+    <button id="save">保存设置</button>
+    <button id="reset">恢复默认设置</button>
+  </div>
+  
+  <div id="status" style="display: none;"></div>
+  
+  <script src="options.js"></script>
+</body>
+</html>
