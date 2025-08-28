@@ -204,35 +204,58 @@ class ImagePreviewer {
     // 图片拖动
     let isDragging = false;
     let lastX, lastY;
+    let moveHandler, upHandler;
 
-    img.addEventListener('mousedown', (e) => {
+    // 确保图片初始状态为可抓取
+    img.style.cursor = 'grab';
+
+    // 鼠标按下时的处理
+    const handleMouseDown = (e) => {
+      if (e.button !== 0) return; // 只响应左键
       isDragging = true;
       lastX = e.clientX;
       lastY = e.clientY;
       img.style.cursor = 'grabbing';
-    });
+      e.preventDefault(); // 防止选中文本等默认行为
 
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
+      // 动态创建移动和松开事件的处理器
+      moveHandler = (moveEvent) => {
+        if (!isDragging) return;
 
-      const deltaX = e.clientX - lastX;
-      const deltaY = e.clientY - lastY;
-      lastX = e.clientX;
-      lastY = e.clientY;
+        const deltaX = moveEvent.clientX - lastX;
+        const deltaY = moveEvent.clientY - lastY;
+        lastX = moveEvent.clientX;
+        lastY = moveEvent.clientY;
 
-      const currentX = parseFloat(img.dataset.translateX) || 0;
-      const currentY = parseFloat(img.dataset.translateY) || 0;
+        const currentX = parseFloat(img.dataset.translateX) || 0;
+        const currentY = parseFloat(img.dataset.translateY) || 0;
 
-      img.dataset.translateX = currentX + deltaX;
-      img.dataset.translateY = currentY + deltaY;
+        img.dataset.translateX = currentX + deltaX;
+        img.dataset.translateY = currentY + deltaY;
 
-      this.updateImageTransform(img);
-    });
+        this.updateImageTransform(img);
+        moveEvent.preventDefault(); // 防止拖拽过程中选中其他元素
+      };
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      img.style.cursor = 'grab';
-    });
+      upHandler = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        img.style.cursor = 'grab';
+
+        // 移除临时事件监听器
+        modal.removeEventListener('mousemove', moveHandler);
+        modal.removeEventListener('mouseup', upHandler);
+        modal.removeEventListener('mouseleave', upHandler);
+      };
+
+      // 在模态框上添加临时事件监听器
+      modal.addEventListener('mousemove', moveHandler);
+      modal.addEventListener('mouseup', upHandler);
+      modal.addEventListener('mouseleave', upHandler); // 鼠标离开模态框时也结束拖拽
+    };
+
+    // 添加鼠标按下事件监听器
+    img.addEventListener('mousedown', handleMouseDown);
 
     // 图片缩放
     modal.addEventListener('wheel', (e) => {
