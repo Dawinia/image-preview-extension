@@ -121,8 +121,8 @@ class ImagePreviewer {
   onImageClick(event) {
     const target = event.target;
 
-    // 检查点击的是否为图片
-    if (target.tagName === 'IMG') {
+    // 检查点击的是否为图片，且不在预览模态框内
+    if (target.tagName === 'IMG' && !target.closest('.image-modal')) {
       // 阻止默认行为和事件冒泡
       event.preventDefault();
       event.stopPropagation();
