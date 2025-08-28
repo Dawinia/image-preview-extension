@@ -19,11 +19,11 @@
     },
     "default_title": "Enhanced Image Previewer"
   },
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "commands"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/constants.js", "js/utils.js", "js/content.js"],
+      "js": ["js/content.js"],
       "css": ["css/styles.css"]
     }
   ],

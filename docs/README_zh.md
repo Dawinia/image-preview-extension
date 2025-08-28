@@ -47,9 +47,7 @@ git clone https://github.com/yourusername/image-preview-extension.git
 - `+`: 放大图片
 - `-`: 缩小图片
 - `↑↓←→`: 移动图片
-- `Alt+P`: 激活扩展
-- `Alt+Z`: 切换最后一个预览
-- 双击: 重置图片大小和位置
+- 双击/0: 重置图片大小和位置
 
 ## 开发
 
