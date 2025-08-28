@@ -23,11 +23,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": [
-        "js/constants.js",
-        "js/utils.js",
-        "js/content.js"
-      ],
+      "js": ["js/constants.js", "js/utils.js", "js/content.js"],
       "css": ["css/styles.css"]
     }
   ],
