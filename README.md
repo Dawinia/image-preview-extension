@@ -47,9 +47,7 @@ git clone https://github.com/dawinia/image-preview-extension.git
 - `+`: Zoom in
 - `-`: Zoom out
 - `↑↓←→`: Move image
-- `Alt+P`: Activate extension
-- `Alt+Z`: Toggle last preview
-- Double-click: Reset image size and position
+- Double-click/0: Reset image size and position
 
 ## Development
 
