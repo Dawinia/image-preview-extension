@@ -35,12 +35,46 @@ class ImagePreviewer {
   // 设置图片点击监听器
   setupImageClickListener() {
     // 移除现有的监听器（如果有）
-    document.removeEventListener('click', this.handleImageClick);
+    document.querySelectorAll('img').forEach(img => {
+      img.removeEventListener('click', this.handleImageClick, true);
+    });
+
+    // 使用 MutationObserver 监听新添加的图片
+    if (this.observer) {
+      this.observer.disconnect();
+    }
 
     // 如果启用了预览，添加监听器
     if (this.settings.enablePreview) {
       this.handleImageClick = this.onImageClick.bind(this);
-      document.addEventListener('click', this.handleImageClick);
+
+      // 为现有的图片添加事件监听器
+      document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('click', this.handleImageClick, true);
+      });
+
+      // 创建 MutationObserver 来监听新添加的图片
+      this.observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) { // 元素节点
+              if (node.tagName === 'IMG') {
+                node.addEventListener('click', this.handleImageClick, true);
+              }
+              // 检查新添加元素内的所有图片
+              node.querySelectorAll('img').forEach(img => {
+                img.addEventListener('click', this.handleImageClick, true);
+              });
+            }
+          });
+        });
+      });
+
+      // 开始观察
+      this.observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
     }
   }
 
