@@ -1,8 +1,8 @@
 # Enhanced Image Previewer
 
-A simple yet powerful Chrome extension for enhancing web image preview experience.
+一个简单而强大的 Chrome 扩展，用于增强网页图片预览体验。
 
-[中文文档](./docs/README_zh.md)
+[English](../README.md)
 
 ## 功能特点
 
@@ -107,6 +107,15 @@ rsvg-convert -w 48 -h 48 icon48.svg -o icon48.png
 rsvg-convert -w 16 -h 16 icon16.svg -o icon16.png
 ```
 
+### 编码规范
+
+- 使用 ES6+ 模块系统
+- 遵循 Chrome 扩展最佳实践
+- 使用常量管理配置
+- 功能模块化，职责分离
+- 统一的错误处理
+- 性能优化措施
+
 ## 贡献指南
 
 欢迎提交 Pull Request 和 Issue！
@@ -119,4 +128,4 @@ rsvg-convert -w 16 -h 16 icon16.svg -o icon16.png
 
 ## 许可证
 
-本项目基于 MIT 许可证开源 - 查看 [LICENSE](LICENSE) 文件了解更多细节
+本项目基于 MIT 许可证开源 - 查看 [LICENSE](../LICENSE) 文件了解更多细节
