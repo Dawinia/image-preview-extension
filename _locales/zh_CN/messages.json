@@ -1,0 +1,101 @@
+{
+  "extensionName": {
+    "message": "增强图片预览器"
+  },
+  "extensionDescription": {
+    "message": "在网页中预览图片，支持缩放、拖拽、键盘控制和可配置遮罩。"
+  },
+  "executeActionCommand": {
+    "message": "打开增强图片预览器"
+  },
+  "toggleLastPreviewCommand": {
+    "message": "切换上次图片预览"
+  },
+  "imageLoadError": {
+    "message": "图片加载失败。"
+  },
+  "imagePreviewLabel": {
+    "message": "图片预览"
+  },
+  "enablePreviewLabel": {
+    "message": "启用图片预览"
+  },
+  "enableKeyboardShortcutsLabel": {
+    "message": "启用键盘快捷键"
+  },
+  "enableKeyboardShortcutsLongLabel": {
+    "message": "启用键盘快捷键（ESC 关闭，+/- 缩放，0 重置，方向键移动）"
+  },
+  "enableDoubleClickResetLabel": {
+    "message": "启用双击重置"
+  },
+  "openOptionsLabel": {
+    "message": "打开设置页面"
+  },
+  "shortcutsTitle": {
+    "message": "快捷键："
+  },
+  "shortcutEsc": {
+    "message": "ESC：关闭预览"
+  },
+  "shortcutZoom": {
+    "message": "+/-：放大/缩小"
+  },
+  "shortcutReset": {
+    "message": "0：重置图片"
+  },
+  "shortcutMove": {
+    "message": "方向键：移动图片"
+  },
+  "optionsTitle": {
+    "message": "增强图片预览器设置"
+  },
+  "previewWindowSection": {
+    "message": "预览窗口"
+  },
+  "backgroundColorLabel": {
+    "message": "背景颜色："
+  },
+  "backgroundOpacityLabel": {
+    "message": "背景不透明度："
+  },
+  "interactionSection": {
+    "message": "交互设置"
+  },
+  "requireModifierKeyLabel": {
+    "message": "需要 Alt/Option 点击才预览"
+  },
+  "triggerSection": {
+    "message": "触发与缩放"
+  },
+  "minimumImageSizeLabel": {
+    "message": "最小图片尺寸："
+  },
+  "maxScaleLabel": {
+    "message": "最大缩放比例："
+  },
+  "scaleSpeedLabel": {
+    "message": "缩放速度："
+  },
+  "saveSettingsLabel": {
+    "message": "保存设置"
+  },
+  "restoreDefaultsLabel": {
+    "message": "恢复默认设置"
+  },
+  "settingsSaved": {
+    "message": "设置已保存。"
+  },
+  "settingsRestored": {
+    "message": "已恢复默认设置。"
+  },
+  "settingsSaveFailed": {
+    "message": "保存失败。"
+  },
+  "settingsRestoreFailed": {
+    "message": "恢复失败。"
+  },
+  "settingsLoadFailed": {
+    "message": "加载失败。"
+  }
+}

@@ -1,0 +1,80 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: block;
+}
+
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+.ipe-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 24px;
+  border: 0;
+  cursor: zoom-out;
+  user-select: none;
+  touch-action: none;
+}
+
+.ipe-preview-image {
+  max-width: 92vw;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border: 0;
+  object-fit: contain;
+  opacity: 0;
+  cursor: grab;
+  transform-origin: center center;
+  transition:
+    opacity 120ms ease-out,
+    transform 80ms ease-out;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ipe-preview-image.is-loaded {
+  opacity: 1;
+}
+
+.ipe-preview-image.is-dragging {
+  cursor: grabbing;
+  transition: opacity 120ms ease-out;
+}
+
+.ipe-loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.32);
+  border-top-color: #ffffff;
+  border-radius: 999px;
+  animation: ipe-spin 800ms linear infinite;
+}
+
+.ipe-error-message {
+  max-width: min(420px, 80vw);
+  color: #ffffff;
+  font:
+    14px/1.5 system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  text-align: center;
+}
+
+@keyframes ipe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

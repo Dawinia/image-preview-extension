@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Enhanced Image Previewer</title>
+    <title data-i18n="extensionName">Enhanced Image Previewer</title>
     <style>
       body {
         width: 300px;
@@ -53,7 +53,7 @@
       }
       .slider:before {
         position: absolute;
-        content: "";
+        content: '';
         height: 16px;
         width: 16px;
         left: 4px;
@@ -96,12 +96,16 @@
   </head>
   <body>
     <div class="header">
-      <img src="icons/icon48.png" alt="Enhanced Image Previewer" />
-      <h1>Enhanced Image Previewer</h1>
+      <img
+        src="icons/icon48.png"
+        alt="Enhanced Image Previewer"
+        data-i18n-attr="alt:extensionName"
+      />
+      <h1 data-i18n="extensionName">Enhanced Image Previewer</h1>
     </div>
 
     <div class="toggle-container">
-      <span>启用图片预览</span>
+      <span data-i18n="enablePreviewLabel">Enable image preview</span>
       <label class="toggle">
         <input type="checkbox" id="enablePreview" checked />
         <span class="slider"></span>
@@ -109,7 +113,7 @@
     </div>
 
     <div class="toggle-container">
-      <span>启用键盘快捷键</span>
+      <span data-i18n="enableKeyboardShortcutsLabel">Enable keyboard shortcuts</span>
       <label class="toggle">
         <input type="checkbox" id="enableKeyboardShortcuts" checked />
         <span class="slider"></span>
@@ -117,23 +121,24 @@
     </div>
 
     <div class="toggle-container">
-      <span>启用双击重置</span>
+      <span data-i18n="enableDoubleClickResetLabel">Enable double-click reset</span>
       <label class="toggle">
         <input type="checkbox" id="enableDoubleClickReset" checked />
         <span class="slider"></span>
       </label>
     </div>
 
-    <a href="#" id="openOptions" class="button">打开设置页面</a>
+    <a href="#" id="openOptions" class="button" data-i18n="openOptionsLabel">Open options</a>
 
     <div class="shortcuts">
-      <p><strong>快捷键:</strong></p>
-      <p>ESC: 关闭预览</p>
-      <p>+/-: 放大/缩小</p>
-      <p>0: 重置大小</p>
-      <p>方向键: 移动图片</p>
+      <p><strong data-i18n="shortcutsTitle">Shortcuts:</strong></p>
+      <p data-i18n="shortcutEsc">ESC: Close preview</p>
+      <p data-i18n="shortcutZoom">+/-: Zoom in/out</p>
+      <p data-i18n="shortcutReset">0: Reset image</p>
+      <p data-i18n="shortcutMove">Arrow keys: Move image</p>
     </div>
 
-    <script src="popup.js"></script>
+    <script src="src/shared/core.js"></script>
+    <script src="src/popup/popup.js"></script>
   </body>
 </html>

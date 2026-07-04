@@ -1,0 +1,101 @@
+{
+  "extensionName": {
+    "message": "Enhanced Image Previewer"
+  },
+  "extensionDescription": {
+    "message": "Preview page images with zoom, drag, keyboard controls, and configurable overlay settings."
+  },
+  "executeActionCommand": {
+    "message": "Open Enhanced Image Previewer"
+  },
+  "toggleLastPreviewCommand": {
+    "message": "Toggle last image preview"
+  },
+  "imageLoadError": {
+    "message": "Image failed to load."
+  },
+  "imagePreviewLabel": {
+    "message": "Image preview"
+  },
+  "enablePreviewLabel": {
+    "message": "Enable image preview"
+  },
+  "enableKeyboardShortcutsLabel": {
+    "message": "Enable keyboard shortcuts"
+  },
+  "enableKeyboardShortcutsLongLabel": {
+    "message": "Enable keyboard shortcuts (ESC close, +/- zoom, 0 reset, arrow keys move)"
+  },
+  "enableDoubleClickResetLabel": {
+    "message": "Enable double-click reset"
+  },
+  "openOptionsLabel": {
+    "message": "Open options"
+  },
+  "shortcutsTitle": {
+    "message": "Shortcuts:"
+  },
+  "shortcutEsc": {
+    "message": "ESC: Close preview"
+  },
+  "shortcutZoom": {
+    "message": "+/-: Zoom in/out"
+  },
+  "shortcutReset": {
+    "message": "0: Reset image"
+  },
+  "shortcutMove": {
+    "message": "Arrow keys: Move image"
+  },
+  "optionsTitle": {
+    "message": "Enhanced Image Previewer Settings"
+  },
+  "previewWindowSection": {
+    "message": "Preview window"
+  },
+  "backgroundColorLabel": {
+    "message": "Background color:"
+  },
+  "backgroundOpacityLabel": {
+    "message": "Background opacity:"
+  },
+  "interactionSection": {
+    "message": "Interaction"
+  },
+  "requireModifierKeyLabel": {
+    "message": "Require Alt/Option-click to preview"
+  },
+  "triggerSection": {
+    "message": "Trigger and zoom"
+  },
+  "minimumImageSizeLabel": {
+    "message": "Minimum image size:"
+  },
+  "maxScaleLabel": {
+    "message": "Maximum zoom:"
+  },
+  "scaleSpeedLabel": {
+    "message": "Zoom speed:"
+  },
+  "saveSettingsLabel": {
+    "message": "Save settings"
+  },
+  "restoreDefaultsLabel": {
+    "message": "Restore defaults"
+  },
+  "settingsSaved": {
+    "message": "Settings saved."
+  },
+  "settingsRestored": {
+    "message": "Default settings restored."
+  },
+  "settingsSaveFailed": {
+    "message": "Save failed."
+  },
+  "settingsRestoreFailed": {
+    "message": "Restore failed."
+  },
+  "settingsLoadFailed": {
+    "message": "Load failed."
+  }
+}

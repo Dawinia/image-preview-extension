@@ -1,0 +1,25 @@
+{
+  "name": "enhanced-image-previewer",
+  "version": "1.2.0",
+  "description": "Chrome MV3 extension for previewing page images with zoom and drag interactions.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "verify": "node scripts/verify.mjs",
+    "smoke": "node scripts/smoke-extension.mjs",
+    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "check": "npm run test && npm run verify && npm run lint && npm run format:check"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4"
+  }
+}

@@ -1,6 +1,6 @@
 # Enhanced Image Previewer
 
-A simple yet powerful Chrome extension for enhancing web image preview experience.
+A lightweight Chrome Manifest V3 extension for enhancing web image preview experience.
 
 [中文文档](./docs/README_zh.md)
 
@@ -15,11 +15,16 @@ A simple yet powerful Chrome extension for enhancing web image preview experienc
 - ⌨️ Keyboard shortcuts support
 - 🎮 Double-click to reset
 - ⚙️ Customizable settings
+- 🧩 Manifest V3 service worker command handling
+- 🧱 Shadow DOM isolated preview UI
+- 🌐 Chrome i18n locale files for English and Simplified Chinese
 
 ## Installation
 
 ### Development Version
+
 1. Clone this repository
+
 ```bash
 git clone https://github.com/dawinia/image-preview-extension.git
 ```
@@ -31,7 +36,8 @@ git clone https://github.com/dawinia/image-preview-extension.git
    - Select the cloned project folder
 
 ### Chrome Web Store
-*Coming soon*
+
+_Coming soon_
 
 ## Usage
 
@@ -40,6 +46,12 @@ git clone https://github.com/dawinia/image-preview-extension.git
 3. Use mouse wheel to zoom
 4. Drag to move the image
 5. Click outside the preview window to close
+
+The preview trigger intentionally avoids common interactive page elements:
+
+- Small images below the configured size threshold are ignored
+- Images inside links, buttons, form controls, or button/link roles are ignored
+- The options page can require Alt/Option-click for previewing
 
 ### Keyboard Shortcuts
 
@@ -52,36 +64,56 @@ git clone https://github.com/dawinia/image-preview-extension.git
 ## Development
 
 ### Project Structure
+
 ```
-├── manifest.json    // Extension configuration
-├── popup.html      // Popup window UI
-├── options.html    // Options page UI
-├── js/
-│   ├── constants.js  // Constants and configurations
-│   ├── utils.js     // Utility functions
-│   ├── content.js   // Main functionality
-│   ├── popup.js     // Popup window logic
-│   └── options.js   // Options page logic
-├── css/
-│   └── styles.css   // Styles
-└── icons/          // Extension icons
-    ├── icon128.svg
-    ├── icon48.svg
-    ├── icon16.svg
-    ├── icon128.png
-    ├── icon48.png
-    └── icon16.png
+├── manifest.json          // MV3 extension configuration
+├── popup.html             // Toolbar popup shell
+├── options.html           // Options page shell
+├── src/
+│   ├── shared/
+│   │   └── core.js        // Settings schema, helpers, messaging primitives
+│   ├── content/
+│   │   ├── previewer.js   // Page image preview controller
+│   │   └── previewer.css  // Shadow DOM preview styles
+│   ├── background/
+│   │   └── service-worker.js // Command bridge for MV3 events
+│   ├── popup/
+│   │   └── popup.js       // Popup settings controls
+│   └── options/
+│       └── options.js     // Advanced settings controls
+├── scripts/
+│   ├── test.mjs           // Unit tests for shared behavior
+│   └── verify.mjs         // Manifest, entrypoint, and syntax verification
+├── _locales/              // Chrome i18n messages
+├── .github/workflows/     // CI verification
+└── icons/                 // Extension icons
 ```
 
 ### Feature Modules
 
-- **Core Features** (`content.js`): 
+- **Shared Core** (`src/shared/core.js`):
+  - Default settings and normalization
+  - DOM transform helpers
+  - Cross-context settings and active-tab messaging
+
+- **Content Previewer** (`src/content/previewer.js`):
   - Image preview
-  - Drag operations
+  - Pointer drag operations
   - Zoom control
   - Keyboard shortcuts
+  - Loading and error states
+  - Shadow DOM isolation
+  - Focus trap while the preview dialog is open
 
-- **Settings Management** (`options.js`):
+- **MV3 Service Worker** (`src/background/service-worker.js`):
+  - Initializes persisted settings
+  - Handles extension command shortcuts
+  - Forwards commands to the active content script
+
+- **Settings UI** (`src/popup/popup.js`, `src/options/options.js`):
+  - Preview enable/disable toggle
+  - Alt/Option-click trigger mode
+  - Minimum image size threshold
   - Background color
   - Background opacity
   - Maximum zoom level
@@ -89,15 +121,27 @@ git clone https://github.com/dawinia/image-preview-extension.git
   - Keyboard shortcuts toggle
   - Double-click reset toggle
 
-- **Utility Functions** (`utils.js`):
-  - Color conversion
-  - Debounce handling
-  - Value constraints
-  - Transform calculations
-
 ### Local Development
+
+This extension is intentionally build-free: Chrome loads the source files directly from this repository.
+
 1. After code changes, click refresh button in `chrome://extensions/`
-2. For icon changes, regenerate PNG files:
+2. Run the local verification suite:
+
+```bash
+npm run check
+```
+
+3. Optionally run a Chrome smoke test with a browser that supports unpacked extension loading from the command line:
+
+```bash
+npm run smoke
+# or
+CHROME_BIN="/path/to/Chrome for Testing" npm run smoke
+```
+
+4. For icon changes, regenerate PNG files:
+
 ```bash
 cd icons
 rsvg-convert -w 128 -h 128 icon128.svg -o icon128.png
@@ -107,12 +151,12 @@ rsvg-convert -w 16 -h 16 icon16.svg -o icon16.png
 
 ### Coding Standards
 
-- ES6+ module system
-- Chrome extension best practices
-- Configuration management via constants
-- Modular functionality with separation of concerns
-- Unified error handling
-- Performance optimization measures
+- Chrome Manifest V3 architecture
+- Static content script injection with a service worker for background events
+- Shadow DOM isolation for injected page UI
+- Shared settings schema across content, popup, options, and background contexts
+- No inline scripts in extension pages
+- ESLint, Prettier, static manifest checks, and CI verification
 
 ## Contributing
 
