@@ -11,7 +11,7 @@ A lightweight Chrome Manifest V3 extension for enhancing web image preview exper
 - 🎯 Drag to move
 - 💫 Smooth animations
 - 🎨 Elegant loading animations
-- 🌐 Support for all websites
+- 🌐 Support for regular web pages
 - ⌨️ Keyboard shortcuts support
 - 🎮 Double-click to reset
 - ⚙️ Customizable settings
@@ -47,11 +47,12 @@ _Coming soon_
 4. Drag to move the image
 5. Click outside the preview window to close
 
-The preview trigger intentionally avoids common interactive page elements:
+Preview triggering is tuned to stay close to normal image browsing behavior while avoiding obvious icon noise:
 
 - Small images below the configured size threshold are ignored
-- Images inside links, buttons, form controls, or button/link roles are ignored
-- The options page can require Alt/Option-click for previewing
+- Linked images can still be previewed with a normal click, matching the original extension behavior
+- The options page can require Alt/Option-click for previewing when you want to avoid accidental activation
+- Chrome internal pages, Chrome Web Store pages, and extension pages do not allow normal content script injection
 
 ### Keyboard Shortcuts
 
@@ -74,7 +75,7 @@ The preview trigger intentionally avoids common interactive page elements:
 │   │   └── core.js        // Settings schema, helpers, messaging primitives
 │   ├── content/
 │   │   ├── previewer.js   // Page image preview controller
-│   │   └── previewer.css  // Shadow DOM preview styles
+│   │   └── previewer.css  // Source copy of the Shadow DOM preview styles
 │   ├── background/
 │   │   └── service-worker.js // Command bridge for MV3 events
 │   ├── popup/
@@ -99,11 +100,15 @@ The preview trigger intentionally avoids common interactive page elements:
 - **Content Previewer** (`src/content/previewer.js`):
   - Image preview
   - Pointer drag operations
-  - Zoom control
+  - Smooth wheel/trackpad zoom control
   - Keyboard shortcuts
   - Loading and error states
   - Shadow DOM isolation
   - Focus trap while the preview dialog is open
+
+- **Preview Styles** (`src/shared/core.js`, `src/content/previewer.css`):
+  - Runtime styles are embedded in `PREVIEW_STYLES` and applied synchronously inside the shadow root
+  - `src/content/previewer.css` mirrors those styles as an editable source reference
 
 - **MV3 Service Worker** (`src/background/service-worker.js`):
   - Initializes persisted settings

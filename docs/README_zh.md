@@ -11,7 +11,7 @@
 - 🎯 支持拖拽移动
 - 💫 平滑的动画效果
 - 🎨 优雅的加载动画
-- 🌐 支持所有网站
+- 🌐 支持常规网页
 - ⌨️ 支持键盘快捷键
 - 🎮 支持双击重置
 - ⚙️ 可自定义设置
@@ -47,11 +47,12 @@ _即将上线_
 4. 拖拽图片可以移动位置
 5. 点击预览窗口外部区域关闭预览
 
-预览触发会主动避开常见交互元素：
+预览触发会尽量保持接近普通图片浏览体验，同时避开明显的小图标干扰：
 
 - 小于设置阈值的小图标会被忽略
-- 链接、按钮、表单控件、button/link role 内的图片会被忽略
-- 设置页可开启 Alt/Option 点击才触发预览
+- 链接中的图片仍可普通点击预览，保持与原插件行为一致
+- 如需避免误触，可在设置页开启 Alt/Option 点击才触发预览
+- `chrome://`、Chrome Web Store、扩展页面等不允许普通 content script 注入
 
 ### 快捷键
 
@@ -74,7 +75,7 @@ _即将上线_
 │   │   └── core.js        // 设置 schema、工具函数、消息基础能力
 │   ├── content/
 │   │   ├── previewer.js   // 页面图片预览控制器
-│   │   └── previewer.css  // Shadow DOM 预览样式
+│   │   └── previewer.css  // Shadow DOM 预览样式源码副本
 │   ├── background/
 │   │   └── service-worker.js // MV3 后台命令桥接
 │   ├── popup/
@@ -99,11 +100,15 @@ _即将上线_
 - **内容脚本预览器** (`src/content/previewer.js`):
   - 图片预览
   - Pointer 拖拽操作
-  - 缩放控制
+  - 平滑滚轮/触摸板缩放控制
   - 键盘快捷键
   - 加载和错误状态
   - Shadow DOM 隔离
   - 预览对话框打开时的焦点陷阱
+
+- **预览样式** (`src/shared/core.js`, `src/content/previewer.css`):
+  - 运行时样式内置在 `PREVIEW_STYLES` 中，并同步注入 shadow root
+  - `src/content/previewer.css` 保留为便于编辑和阅读的样式源码副本
 
 - **MV3 Service Worker** (`src/background/service-worker.js`):
   - 初始化持久化设置
