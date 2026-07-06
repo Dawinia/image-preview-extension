@@ -50,7 +50,8 @@ _Coming soon_
 Preview triggering is tuned to stay close to normal image browsing behavior while avoiding obvious icon noise:
 
 - Small images below the configured size threshold are ignored
-- Linked images can still be previewed with a normal click, matching the original extension behavior
+- The size threshold uses the image's rendered page size first, so large source files displayed as tiny icons are ignored
+- Images inside links, buttons, and other interactive controls keep the page's normal click behavior; use Alt/Option-click to preview them
 - The options page can require Alt/Option-click for previewing when you want to avoid accidental activation
 - Chrome internal pages, Chrome Web Store pages, and extension pages do not allow normal content script injection
 
@@ -130,6 +131,8 @@ Preview triggering is tuned to stay close to normal image browsing behavior whil
 
 This extension is intentionally build-free: Chrome loads the source files directly from this repository.
 
+Use Node.js `^20.19.0`, `^22.13.0`, or `>=24` for local checks; the dev tooling follows ESLint's supported runtime range.
+
 1. After code changes, click refresh button in `chrome://extensions/`
 2. Run the local verification suite:
 
@@ -144,6 +147,8 @@ npm run smoke
 # or
 CHROME_BIN="/path/to/Chrome for Testing" npm run smoke
 ```
+
+CI installs Chrome for Testing with `browser-actions/setup-chrome` and runs the smoke test after the static gate.
 
 4. For icon changes, regenerate PNG files:
 

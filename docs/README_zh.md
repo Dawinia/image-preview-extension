@@ -50,7 +50,8 @@ _即将上线_
 预览触发会尽量保持接近普通图片浏览体验，同时避开明显的小图标干扰：
 
 - 小于设置阈值的小图标会被忽略
-- 链接中的图片仍可普通点击预览，保持与原插件行为一致
+- 尺寸阈值会优先使用图片在页面上的渲染尺寸，因此原图很大但显示成小图标的图片会被忽略
+- 链接、按钮和其他交互控件里的图片会保留页面原有点击行为；可用 Alt/Option 点击进行预览
 - 如需避免误触，可在设置页开启 Alt/Option 点击才触发预览
 - `chrome://`、Chrome Web Store、扩展页面等不允许普通 content script 注入
 
@@ -130,6 +131,8 @@ _即将上线_
 
 本扩展刻意保持无构建流程：Chrome 直接加载仓库里的源码。
 
+本地校验请使用 Node.js `^20.19.0`、`^22.13.0` 或 `>=24`；开发工具链遵循 ESLint 支持的运行时范围。
+
 1. 修改代码后在 `chrome://extensions/` 中点击刷新按钮
 2. 运行本地校验：
 
@@ -144,6 +147,8 @@ npm run smoke
 # 或
 CHROME_BIN="/path/to/Chrome for Testing" npm run smoke
 ```
+
+CI 会通过 `browser-actions/setup-chrome` 安装 Chrome for Testing，并在静态门禁后运行 smoke test。
 
 4. 修改图标需要重新生成 PNG 文件：
 

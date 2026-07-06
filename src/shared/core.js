@@ -318,17 +318,20 @@
     const naturalDimension = dimension === 'width' ? image?.naturalWidth : image?.naturalHeight;
     const layoutDimension = dimension === 'width' ? image?.width : image?.height;
 
-    if (Number.isFinite(naturalDimension) && naturalDimension > 0) {
-      return naturalDimension;
+    if (typeof image?.getBoundingClientRect === 'function') {
+      const rect = image.getBoundingClientRect();
+      const renderedDimension = dimension === 'width' ? rect.width : rect.height;
+      if (Number.isFinite(renderedDimension) && renderedDimension > 0) {
+        return renderedDimension;
+      }
     }
 
     if (Number.isFinite(layoutDimension) && layoutDimension > 0) {
       return layoutDimension;
     }
 
-    if (typeof image?.getBoundingClientRect === 'function') {
-      const rect = image.getBoundingClientRect();
-      return dimension === 'width' ? rect.width : rect.height;
+    if (Number.isFinite(naturalDimension) && naturalDimension > 0) {
+      return naturalDimension;
     }
 
     return 0;
@@ -343,6 +346,13 @@
     }
 
     if (normalizedSettings.requireModifierKey && !event.altKey) {
+      return false;
+    }
+
+    const interactiveAncestor = image.closest?.(
+      'a, button, input, textarea, select, [role="button"], [role="link"]'
+    );
+    if (interactiveAncestor && !event.altKey) {
       return false;
     }
 
