@@ -26,11 +26,19 @@ function collectHtmlScripts(relativePath) {
   return scripts;
 }
 
+function canonicalStyle(source) {
+  return source.trim().replace(/["']/g, '').replace(/\s+/g, '');
+}
+
 const manifest = readJson('manifest.json');
 const packageJson = readJson('package.json');
+const packageLock = readJson('package-lock.json');
+const requiredNodeRange = '^20.19.0 || ^22.13.0 || >=24';
 
 assert.equal(manifest.manifest_version, 3);
 assert.equal(packageJson.version, manifest.version);
+assert.equal(packageJson.engines?.node, requiredNodeRange);
+assert.equal(packageLock.packages?.['']?.engines?.node, requiredNodeRange);
 assert.equal(manifest.name, '__MSG_extensionName__');
 assert.equal(manifest.description, '__MSG_extensionDescription__');
 assert.equal(manifest.default_locale, 'en');
@@ -100,6 +108,26 @@ for (const locale of ['en', 'zh_CN']) {
 assertFile('.github/workflows/check.yml');
 assertFile('eslint.config.js');
 assertFile('.prettierrc.json');
+
+const workflow = fs.readFileSync(new URL('.github/workflows/check.yml', root), 'utf8');
+assert.match(workflow, /browser-actions\/setup-chrome@v2/);
+assert.match(workflow, /steps\.setup-chrome\.outputs\.chrome-path/);
+assert.match(workflow, /npm run smoke/);
+
+const sharedSource = fs.readFileSync(new URL('src/shared/core.js', root), 'utf8');
+const previewCss = fs.readFileSync(new URL('src/content/previewer.css', root), 'utf8');
+const smokeSource = fs.readFileSync(new URL('scripts/smoke-extension.mjs', root), 'utf8');
+const styleMatch = sharedSource.match(/const PREVIEW_STYLES = `\n([\s\S]*?)\n`\.trim\(\);/);
+assert.ok(styleMatch, 'shared core should expose PREVIEW_STYLES as a template literal');
+assert.equal(
+  canonicalStyle(previewCss),
+  canonicalStyle(styleMatch[1]),
+  'previewer.css should mirror PREVIEW_STYLES'
+);
+assert.match(smokeSource, /--no-sandbox/);
+assert.match(smokeSource, /--disable-dev-shm-usage/);
+assert.match(smokeSource, /chromeStderr/);
+assert.match(smokeSource, /Timed out waiting for Chrome DevTools port[\s\S]*Chrome stderr/);
 
 const jsFiles = [
   'eslint.config.js',

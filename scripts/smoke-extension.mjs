@@ -50,13 +50,15 @@ function createServer() {
   });
 }
 
-async function waitForDevTools(profileDir, browserProcess) {
+async function waitForDevTools(profileDir, browserProcess, getDiagnostics = () => '') {
   const activePortPath = path.join(profileDir, 'DevToolsActivePort');
-  const deadline = Date.now() + 10000;
+  const deadline = Date.now() + 30000;
 
   while (Date.now() < deadline) {
     if (browserProcess.exitCode !== null) {
-      throw new Error(`Chrome exited early with code ${browserProcess.exitCode}`);
+      throw new Error(
+        `Chrome exited early with code ${browserProcess.exitCode}\nChrome stderr:\n${getDiagnostics()}`
+      );
     }
 
     if (fs.existsSync(activePortPath)) {
@@ -67,7 +69,9 @@ async function waitForDevTools(profileDir, browserProcess) {
     await delay(100);
   }
 
-  throw new Error('Timed out waiting for Chrome DevTools port');
+  throw new Error(
+    `Timed out waiting for Chrome DevTools port\nChrome stderr:\n${getDiagnostics()}`
+  );
 }
 
 async function getJson(url) {
@@ -129,19 +133,23 @@ assert.ok(chromePath, 'Chrome executable was not found. Set CHROME_BIN to run th
 
 const { server, port: appPort } = await createServer();
 const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ipe-smoke-'));
+const canSkipBlockedHeadlessExtension = !process.env.CI && !process.env.CHROME_BIN;
 let smokeSkipped = false;
+let chromeStderr = '';
+const linuxCiChromeFlags =
+  process.platform === 'linux' ? ['--no-sandbox', '--disable-dev-shm-usage'] : [];
 const chrome = spawn(chromePath, [
   '--headless=new',
   '--disable-gpu',
   '--enable-logging=stderr',
   '--no-first-run',
   '--no-default-browser-check',
+  ...linuxCiChromeFlags,
   `--user-data-dir=${profileDir}`,
   `--load-extension=${rootPath}`,
   '--remote-debugging-port=0',
   `http://127.0.0.1:${appPort}/`
 ]);
-let chromeStderr = '';
 chrome.stderr?.on('data', (chunk) => {
   chromeStderr += chunk.toString();
   if (chromeStderr.length > 12000) {
@@ -150,7 +158,11 @@ chrome.stderr?.on('data', (chunk) => {
 });
 
 try {
-  const { port: debugPort, browserPath } = await waitForDevTools(profileDir, chrome);
+  const { port: debugPort, browserPath } = await waitForDevTools(
+    profileDir,
+    chrome,
+    () => chromeStderr
+  );
   const debugSnapshot = { targets: [] };
   const browserCdp = await connectCdp(`ws://127.0.0.1:${debugPort}${browserPath}`);
   try {
@@ -226,7 +238,8 @@ try {
 
     if (
       !result.result.value.hasModal &&
-      /--load-extension is not allowed in Google Chrome, ignoring/.test(chromeStderr)
+      /--load-extension is not allowed in Google Chrome, ignoring/.test(chromeStderr) &&
+      canSkipBlockedHeadlessExtension
     ) {
       smokeSkipped = true;
       console.log(

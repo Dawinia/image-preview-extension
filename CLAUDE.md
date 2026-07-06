@@ -15,6 +15,8 @@ npm run smoke         # Optional Chrome smoke test; set CHROME_BIN to a Chrome-f
 
 Run a single test by editing/filtering within `scripts/test.mjs` — it is a plain `node:test`-free script using `node:assert`, so there is no test-name filter flag.
 
+Use Node.js `^20.19.0`, `^22.13.0`, or `>=24`; the locked ESLint toolchain requires that runtime range.
+
 ## Architecture
 
 Build-free Chrome Manifest V3 extension. Chrome loads the source files in `src/` directly; there is no bundler or transpile step. After code changes, hit refresh in `chrome://extensions/`.
@@ -31,6 +33,8 @@ Because of this, changes to shared logic belong in `core.js`, and its public sur
 
 **Preview UI** (`src/content/previewer.js`) renders into a **Shadow DOM** host to isolate from page styles. Preview CSS lives as the `PREVIEW_STYLES` string in `core.js` and is injected into the shadow root — it is intentionally _not_ a manifest content-script CSS file and _not_ a web-accessible resource (`verify.mjs` enforces both). `previewer.css` exists but styles are applied via the shadow root.
 
+**Preview triggering** stays conservative around page interactions. Normal image clicks can open the preview, but images inside links, buttons, form controls, or link/button roles keep their page behavior unless the click uses Alt/Option. The minimum-size threshold uses rendered dimensions first, then layout dimensions, and only falls back to natural dimensions when no rendered size is available.
+
 **Background command flow**: the `toggle_last_preview` keyboard command hits the service worker, which calls `sendMessageToActiveTab` to relay a `TOGGLE_LAST_PREVIEW` message to the active tab's content script.
 
 ## Invariants enforced by `scripts/verify.mjs`
@@ -42,6 +46,7 @@ Breaking any of these fails CI. Before changing manifest/structure, re-read `ver
 - No inline `<script>` in `popup.html` / `options.html` — external `src` only.
 - i18n keys must exist in **both** `_locales/en` and `_locales/zh_CN` (the checked key list is in `verify.mjs`).
 - No `web_accessible_resources`; content-script `css` must stay undefined (styles go through the shadow root).
+- `previewer.css` must stay token-equivalent to `PREVIEW_STYLES`; `verify.mjs` compares both so the editable CSS copy cannot drift silently.
 
 ## i18n
 

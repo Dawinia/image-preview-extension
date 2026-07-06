@@ -78,8 +78,10 @@ assert.equal(
 );
 
 function createFakeImage({
-  width = 120,
-  height = 80,
+  naturalWidth = 120,
+  naturalHeight = 80,
+  renderedWidth = naturalWidth,
+  renderedHeight = naturalHeight,
   source = 'https://example.com/image.png',
   containerTag = null,
   role = null
@@ -98,10 +100,15 @@ function createFakeImage({
 
   return {
     tagName: 'IMG',
-    naturalWidth: width,
-    naturalHeight: height,
+    naturalWidth,
+    naturalHeight,
+    width: renderedWidth,
+    height: renderedHeight,
     currentSrc: source,
     src: source,
+    getBoundingClientRect() {
+      return { width: renderedWidth, height: renderedHeight };
+    },
     closest(selector) {
       if (selector === 'a, button, input, textarea, select, [role="button"], [role="link"]') {
         return container;
@@ -113,16 +120,40 @@ function createFakeImage({
 
 assert.equal(app.shouldPreviewImage(createFakeImage(), { altKey: true }), true);
 assert.equal(
-  app.shouldPreviewImage(createFakeImage({ width: 24, height: 24 }), { altKey: true }),
+  app.shouldPreviewImage(createFakeImage({ renderedWidth: 24, renderedHeight: 24 }), {
+    altKey: true
+  }),
+  false
+);
+assert.equal(
+  app.shouldPreviewImage(
+    createFakeImage({
+      naturalWidth: 1200,
+      naturalHeight: 800,
+      renderedWidth: 24,
+      renderedHeight: 24
+    }),
+    { altKey: true }
+  ),
   false
 );
 assert.equal(
   app.shouldPreviewImage(createFakeImage({ containerTag: 'a' }), { altKey: false }),
-  true
+  false
 );
 assert.equal(
   app.shouldPreviewImage(createFakeImage({ containerTag: 'a' }), { altKey: true }),
   true
+);
+assert.equal(
+  app.shouldPreviewImage(createFakeImage({ containerTag: 'button' }), { altKey: false }),
+  false
+);
+assert.equal(
+  app.shouldPreviewImage(createFakeImage({ containerTag: 'div', role: 'button' }), {
+    altKey: false
+  }),
+  false
 );
 assert.equal(app.shouldPreviewImage(createFakeImage(), { altKey: false }), true);
 assert.equal(
